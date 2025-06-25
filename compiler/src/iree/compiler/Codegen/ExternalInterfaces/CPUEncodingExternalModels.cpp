@@ -341,6 +341,17 @@ enumerateMatmulTileRiscv32(DictionaryAttr config) {
   return {};
 }
 
+static SmallVector<TileMxNxK>
+enumerateMatmulTileRiscv64(DictionaryAttr config) {
+  if (hasUkernel(config)) {
+    return {
+        TileMxNxK{8, 8, 1}, // Some reasonable tile shape.
+    };
+  }
+  // Fallback - no architecture-optimized tile size for this case.
+  return {};
+}
+
 // Enumerate tile sizes to choose from on arm64.
 // For narrow-{M,N} cases, this only enumerates on narrow M. The narrow-N cases
 // are handled by transposition in chooseMatmulTile.
@@ -555,6 +566,9 @@ enumerateCPUMatmulTiles(IREE::Encoding::EncodingAttr encoding,
   }
   if (isX86_64(config)) {
     return enumerateMatmulTileX86_64(elementTypes, config);
+  }
+  if (isRISCV64(config)) {
+    return enumerateMatmulTileRiscv64(config);
   }
   if (isRISCV32(config)) {
     return enumerateMatmulTileRiscv32(config);

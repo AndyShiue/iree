@@ -10,9 +10,6 @@
 
 iree_add_all_subdirs()
 
-iree_compiler_targeting_iree_arch(_IREE_UKERNEL_BITCODE_BUILD_RISCV_64 "riscv_64")
-if(_IREE_UKERNEL_BITCODE_BUILD_RISCV_64)
-
 iree_bitcode_library(
   NAME
     ukernel_bitcode_arch_riscv_64_entry_points
@@ -23,8 +20,6 @@ iree_bitcode_library(
     "pack_riscv_64_entry_point.c"
     "query_tile_sizes_riscv_64_entry_point.c"
     "unpack_riscv_64_entry_point.c"
-  COPTS
-    "-march=rv64gcv"
 )
 
 iree_link_bitcode(
@@ -35,8 +30,23 @@ iree_link_bitcode(
 
 )
 
-elseif(IREE_BUILD_COMPILER AND IREE_TARGET_BACKEND_LLVM_CPU)
-iree_make_empty_file("${CMAKE_CURRENT_BINARY_DIR}/ukernel_bitcode_arch_riscv_64.bc")
-endif()  # _IREE_UKERNEL_BITCODE_BUILD_RISCV_64
-
 ### BAZEL_TO_CMAKE_PRESERVES_ALL_CONTENT_BELOW_THIS_LINE ###
+
+if (NOT (IREE_ARCH STREQUAL "riscv_64"))
+  return()
+endif()
+
+iree_cc_library(
+  NAME riscv_64
+  SRCS
+    "mmt4d_riscv_64_entry_point.c"
+    "pack_riscv_64_entry_point.c"
+    "unpack_riscv_64_entry_point.c"
+    "query_tile_sizes_riscv_64_entry_point.c"
+  DEPS
+    iree::base::core_headers
+    iree::builtins::ukernel::internal_headers
+  PUBLIC
+)
+
+set(IREE_UK_ARCH_DEPS "iree::builtins::ukernel::arch::riscv_64" PARENT_SCOPE)

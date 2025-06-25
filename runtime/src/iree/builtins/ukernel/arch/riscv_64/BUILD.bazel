@@ -17,14 +17,6 @@ package(
 # UKernel bitcode files
 #===------------------------------------------------------------------------===#
 
-iree_cmake_extra_content(
-    content = """
-iree_compiler_targeting_iree_arch(_IREE_UKERNEL_BITCODE_BUILD_RISCV_64 "riscv_64")
-if(_IREE_UKERNEL_BITCODE_BUILD_RISCV_64)
-""",
-    inline = True,
-)
-
 # All headers transitively included by code in this directory. Bazel-only.
 UKERNEL_RISCV_64_INTERNAL_HEADERS = [
 ]
@@ -38,7 +30,7 @@ iree_bitcode_library(
         "unpack_riscv_64_entry_point.c",
     ],
     arch = "riscv_64",
-    copts = ["-march=rv64gcv"],
+    # copts = ["-march=rv64gcv"],
     internal_hdrs = UKERNEL_RISCV_64_INTERNAL_HEADERS,
 )
 
@@ -47,13 +39,4 @@ iree_link_bitcode(
     bitcode_files = [
         "ukernel_bitcode_arch_riscv_64_entry_points.bc",
     ],
-)
-
-iree_cmake_extra_content(
-    content = """
-elseif(IREE_BUILD_COMPILER AND IREE_TARGET_BACKEND_LLVM_CPU)
-iree_make_empty_file("${CMAKE_CURRENT_BINARY_DIR}/ukernel_bitcode_arch_riscv_64.bc")
-endif()  # _IREE_UKERNEL_BITCODE_BUILD_RISCV_64
-""",
-    inline = True,
 )
