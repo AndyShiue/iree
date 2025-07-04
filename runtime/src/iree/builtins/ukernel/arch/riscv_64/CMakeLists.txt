@@ -15,6 +15,9 @@ iree_bitcode_library(
     ukernel_bitcode_arch_riscv_64_entry_points
   ARCH
     riscv_64
+  INTERNAL_HDRS
+    "common_riscv_64.h"
+    "pack_riscv_64_internal.h"
   SRCS
     "mmt4d_riscv_64_entry_point.c"
     "pack_riscv_64_entry_point.c"
@@ -22,10 +25,23 @@ iree_bitcode_library(
     "unpack_riscv_64_entry_point.c"
 )
 
+iree_bitcode_library(
+  NAME
+    ukernel_bitcode_arch_riscv_64_base
+  ARCH
+    riscv_64
+  INTERNAL_HDRS
+    "common_riscv_64.h"
+    "pack_riscv_64_internal.h"
+  SRCS
+    "pack_riscv_64_base.c"
+)
+
 iree_link_bitcode(
   NAME
     ukernel_bitcode_arch_riscv_64
   SRCS
+    "ukernel_bitcode_arch_riscv_64_base.bc"
     "ukernel_bitcode_arch_riscv_64_entry_points.bc"
 
 )
@@ -41,6 +57,7 @@ iree_cc_library(
   SRCS
     "mmt4d_riscv_64_entry_point.c"
     "pack_riscv_64_entry_point.c"
+    "pack_riscv_64_base.c"
     "unpack_riscv_64_entry_point.c"
     "query_tile_sizes_riscv_64_entry_point.c"
   DEPS
