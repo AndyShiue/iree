@@ -30,7 +30,7 @@ iree_bitcode_library(
         "unpack_riscv_64_entry_point.c",
     ],
     arch = "riscv_64",
-    # copts = ["-march=rv64gcv"],
+    copts = ["-march=rv64gcv", "-mabi=lp64d"],
     internal_hdrs = UKERNEL_RISCV_64_INTERNAL_HEADERS,
 )
 
