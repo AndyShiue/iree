@@ -15,14 +15,13 @@ iree_bitcode_library(
     ukernel_bitcode_arch_riscv_64_entry_points
   ARCH
     riscv_64
-  INTERNAL_HDRS
-    "common_riscv_64.h"
-    "pack_riscv_64_internal.h"
   SRCS
     "mmt4d_riscv_64_entry_point.c"
     "pack_riscv_64_entry_point.c"
     "query_tile_sizes_riscv_64_entry_point.c"
     "unpack_riscv_64_entry_point.c"
+  COPTS
+    "-march=rv64gcv"
 )
 
 iree_bitcode_library(
@@ -30,11 +29,10 @@ iree_bitcode_library(
     ukernel_bitcode_arch_riscv_64_base
   ARCH
     riscv_64
-  INTERNAL_HDRS
-    "common_riscv_64.h"
-    "pack_riscv_64_internal.h"
   SRCS
     "pack_riscv_64_base.c"
+  COPTS
+    "-march=rv64gcv"
 )
 
 iree_link_bitcode(
