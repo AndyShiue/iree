@@ -19,6 +19,9 @@ package(
 
 # All headers transitively included by code in this directory. Bazel-only.
 UKERNEL_RISCV_64_INTERNAL_HEADERS = [
+    "common_riscv_64.h",
+    "pack_riscv_64_internal.h",
+    "unpack_riscv_64_internal.h",
 ]
 
 iree_bitcode_library(
@@ -38,6 +41,7 @@ iree_bitcode_library(
     name = "ukernel_bitcode_arch_riscv_64_base",
     srcs = [
         "pack_riscv_64_base.c",
+        "unpack_riscv_64_base.c",
     ],
     arch = "riscv_64",
     copts = ["-march=rv64gcv"],
